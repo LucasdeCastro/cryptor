@@ -1,20 +1,21 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { View, FlatList } from "react-native";
+import { View, FlatList, Text } from "react-native";
 import { fetchCoinData } from "../actions/fetchCoinData";
 import CoinCard from "./CoinCard";
 import { updateTime } from "../utils/constants";
 
 class CryptorContainer extends React.Component {
+  state = { showLoaging: false };
   componentDidMount() {
-    this.props.fetchCoinData(this.props.currency);
+    this.props.fetchCoinData(this.props.currency, this.props.page);
     this.startTimer();
   }
 
   startTimer = () =>
     (this.timer = setTimeout(
-      _ => this.props.fetchCoinData(this.props.currency),
+      _ => this.props.fetchCoinData(this.props.currency, this.props.page, true),
       updateTime
     ));
 
@@ -27,7 +28,12 @@ class CryptorContainer extends React.Component {
 
   fetchData = () => {
     clearTimeout(this.timer);
-    this.props.fetchCoinData(this.props.currency);
+    this.props.fetchCoinData(this.props.currency, this.props.page);
+  };
+
+  onScrool = () => {
+    this.setState({ showLoaging: true });
+    this.fetchData();
   };
 
   componentDidUpdate() {
@@ -37,13 +43,19 @@ class CryptorContainer extends React.Component {
   render() {
     const { currency } = this.props;
     return (
-      <FlatList
-        data={this.props.data}
-        onRefresh={this.fetchData}
-        keyExtractor={item => item.id}
-        refreshing={!!this.props.isFetching}
-        renderItem={({ item }) => <CoinCard {...item} currency={currency} />}
-      />
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={this.props.data}
+          onRefresh={this.fetchData}
+          onEndReachedThreshold={0.5}
+          onEndReached={this.onScrool}
+          keyExtractor={item => item.id}
+          refreshing={!!this.props.isFetching}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => <CoinCard {...item} currency={currency} />}
+        />
+      </View>
     );
   }
 }

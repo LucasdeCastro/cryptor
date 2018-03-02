@@ -21,7 +21,9 @@ class CoinCard extends React.PureComponent {
     const isDown_last7 = parseFloat(l7d) < 0;
     const isDown_last24 = parseFloat(l24d) < 0;
     const lowerCurrency = (currency || "usd").toLowerCase();
-    console.log(Object.keys(commonCurrency));
+
+    const price = parseFloat(this.props["price_" + lowerCurrency]).toFixed(2);
+
     return (
       <View style={styles.container}>
         <View style={[styles.row, styles.header]}>
@@ -33,8 +35,7 @@ class CoinCard extends React.PureComponent {
             <Text style={styles.bold}>{symbol}</Text> - {name}
           </Text>
           <Text style={styles.price}>
-            {currency}{" "}
-            {parseFloat(this.props["price_" + lowerCurrency]).toFixed(2)}
+            {currency} {price}
           </Text>
         </View>
 
