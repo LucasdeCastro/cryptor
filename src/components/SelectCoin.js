@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 
 class SelectCoin extends React.Component {
   changeCurrency = e => _ => {
-    this.props.fetchCoinData(e);
+    this.props.fetchCoinData(e, this.props.page, true);
     this.props.close();
   };
 
@@ -37,6 +37,9 @@ class SelectCoin extends React.Component {
               </TouchableOpacity>
             ))}
           </ScrollView>
+          <TouchableOpacity style={styles.button} onPress={this.props.close}>
+            <Text style={styles.itemSelect}>Fechar</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -50,6 +53,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "rgba(0,0,0,0.7)"
+  },
+
+  button: {
+    margin: 10,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    backgroundColor: "#FFE506"
   },
 
   item: {

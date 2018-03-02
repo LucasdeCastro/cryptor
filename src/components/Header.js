@@ -39,7 +39,7 @@ class Header extends React.Component {
           visible={visible}
           onRequestClose={this.toggleModal}
         >
-          <SelectCoin close={this.toggleModal} />
+          <SelectCoin close={this.toggleModal} page={this.props.page} />
         </Modal>
       </View>
     );
